@@ -71,7 +71,7 @@ function getOptions() {
     var options = new PDFSaveOptions();
 
     // Set the options you want below:
-    options.pDFPreset = "NL Subhi";
+    options.pDFPreset = "PDF PRESET NAME";
 
     // For example, uncomment to view the pdfs in Acrobat after conversion
     // options.viewAfterSaving = true;
