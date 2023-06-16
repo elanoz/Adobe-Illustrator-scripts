@@ -61,7 +61,7 @@ function getOptions() {
   var options = new PDFSaveOptions();
 
   // Set the options you want below:
-  options.pDFPreset = "NL_Print";
+  options.pDFPreset = "Your PDF Preset Name";
 
   // For example, uncomment to view the pdfs in Acrobat after conversion
   // options.viewAfterSaving = true;
