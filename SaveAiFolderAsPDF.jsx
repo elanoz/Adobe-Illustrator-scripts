@@ -4,10 +4,9 @@ DESCRIPTION
 	Based on the SaveDocsAsPDF.jsx script from Adobe Systems
 	Copyright 2005 - see that file for full details.
 
-    Saves the open document and every *.ai documents in 
-    the opened Illustrator document folder as a PDF file in
-    a the same document folder and
-    add current date to the saved PDF name.
+    Save every *.ai document in the provided folder path
+    as a PDF  in a the same folder and
+    append today's date to the saved PDF name.
 
 *********************************************************/
 
