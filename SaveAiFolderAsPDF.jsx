@@ -53,7 +53,7 @@ try {
       }
     }
   } else {
-    throw new Error("There are no folder provided!");
+    throw new Error("There is no folder provided!");
   }
 
   alert("Ai files saved as PDF");
