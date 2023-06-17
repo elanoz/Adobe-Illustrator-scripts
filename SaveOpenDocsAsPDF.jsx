@@ -4,51 +4,59 @@ DESCRIPTION
 	Based on the SaveDocsAsPDF.jsx script from Adobe Systems
 	Copyright 2005 - see that file for full details.
 
-    Saves every document open in Illustrator
-	as a PDF file in a the same document folder and
-    appinding current date to the saved PDF name.
+    Saves the open document and every *.ai documents in 
+    the opened Illustrator document folder as a PDF file in
+    a the same document folder and
+    add current date to the saved PDF name.
 
 *********************************************************/
 
-// Main Code [Execution of script begins here]
+/** Saves every *.ai document on the provided folder path
+    as a PDF file on the same folder.
+*/
 
-var doc = app.activeDocument;
-var docsLen = app.documents.length;
+// Main Code [Execution of script begins here]
 
 try {
   // uncomment to suppress Illustrator warning dialogs
   // app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
-  if (docsLen > 0) {
+  var destFolder = null;
+
+  var destFolder = Folder.selectDialog(
+    "Select folder containing Ai files.",
+    "~"
+  );
+
+  var aiFolder = new Folder(destFolder);
+  var aiFiles = aiFolder.getFiles("*.ai");
+
+  if (destFolder != null) {
     var options, i, activeDoc, targetFile;
 
-    for (i = 0; i < docsLen; i++) {
-      activeDoc = app.documents[i]; // returns the document object
-      activeDoc.activate(); // set view to active document
+    // Get the PDF options to be used
+    options = this.getOptions();
 
-      var destFolder = null;
-
-      var folderPath = activeDoc.fullName.fullName; // get active document full name
-      var destFolderPath = folderPath.substring(0, folderPath.lastIndexOf("/")); // extract current folder path
-      destFolder = destFolderPath;
-
-      if (destFolder != null) {
-        // Get the PDF options to be used
-        options = getOptions();
+    for (i = 0; i < aiFiles.length; i++) {
+      var file = aiFiles[i];
+      if (file instanceof File) {
+        activeDoc = aiFiles[i]; // returns the document object
+        var aiFile = app.open(activeDoc);
 
         // Get the file to save the document as pdf into
-        targetFile = getTargetFile(activeDoc.name, ".pdf", destFolder);
+        targetFile = this.getTargetFile(activeDoc.name, ".pdf", destFolder);
 
         // Save as pdf
-        activeDoc.saveAs(targetFile, options);
-
+        aiFile.saveAs(targetFile, options);
         // Close the AI file without saving changes
-        // activeDoc.close(SaveOptions.DONOTSAVECHANGES);
-      } else {
-        throw new Error("There are no document open!");
+        aiFile.close(SaveOptions.DONOTSAVECHANGES);
       }
     }
+  } else {
+    throw new Error("There are no folder provided!");
   }
+
+  alert("Ai files saved as PDF");
 } catch (e) {
   alert(e.message, "Script Alert", true);
 }
@@ -60,11 +68,8 @@ function getOptions() {
   // Create the required options object
   var options = new PDFSaveOptions();
 
-  // Set the options you want below:
-  options.pDFPreset = "Your PDF Preset Name";
-
-  // For example, uncomment to view the pdfs in Acrobat after conversion
-  // options.viewAfterSaving = true;
+  // Set the PDF preset you want to use below:
+  options.pDFPreset = "YOUR PDF PRESET NAME";
 
   return options;
 }
